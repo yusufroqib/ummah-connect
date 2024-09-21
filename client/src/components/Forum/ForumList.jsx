@@ -1,12 +1,11 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import { getUser } from "../../redux/feature/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import useRedirectLoggedOutUser from "../UseRedirect/UseRedirectLoggedOutUser";
 import Sidebar from "../Sidebar/Sidebar";
 import { HiOutlineViewGridAdd } from "react-icons/hi";
-import { AdminLink } from "../Protect/HiddenLink";
 import PageLoader from "../Loader/PageLoader";
 
 const URL = import.meta.env.VITE_APP_BACKEND_URL;
@@ -55,7 +54,7 @@ const ForumList = ({ userId }) => {
       try {
         const response = await axios.get(`${URL}/discussion/all-threads`);
         setThreads(response.data);
-        // console.log(response.data.createdBy)
+        // console.log(response.data)
         setLoading(false);
       } catch (error) {
         console.error("Error fetching threads:", error);
@@ -90,7 +89,6 @@ const ForumList = ({ userId }) => {
     return new Date(dateString).toLocaleString(undefined, options);
   };
 
-
   return (
     <div className="flex flex-col md:flex-row min-h-screen">
       <Sidebar
@@ -101,8 +99,9 @@ const ForumList = ({ userId }) => {
       />
 
       <div
-        className={`w-full bg-white p-4 flex justify-center ${isSidebarOpen ? "md:ml-1/4" : ""
-          }`}
+        className={`w-full bg-white p-4 flex justify-center ${
+          isSidebarOpen ? "md:ml-1/4" : ""
+        }`}
       >
         <div className="flex flex-col items-left  w-full md:w-5/6 p-4">
           <div className="p-4">
@@ -148,7 +147,7 @@ const ForumList = ({ userId }) => {
                         Author: {thread.createdBy.username}{" "}
                       </p>
                       <p className=" py-2 mt-2">
-                        Created: {formatDate(thread.createdBy.updatedAt)}{" "}
+                        Created: {formatDate(thread.createdAt)}{" "}
                       </p>
                     </div>
                   </Link>
